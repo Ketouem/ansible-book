@@ -1,6 +1,11 @@
 ---
 - hosts: all
   become: true
+  roles:
+    - Ketouem.php
+    - Ketouem.nginx
+    - Ketouem.mysql
+    - Ketouem.wordpress
   tasks:
     # PHP
     - name: Add the ondrej PHP PPA
