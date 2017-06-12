@@ -16,6 +16,7 @@
         - php-xml
     - name: Remove Apache2 (installed by php)
       apt: name=apache2 state=removed
+
     # MySQL
     - name: Install MySQL
       apt: name={{item}} state=installed
@@ -45,3 +46,16 @@
     - name: Create my.cnf
       template: src=templates/mysql/my.cnf dest=/root/.my.cnf
       when: mysql_new_root_pass.changed
+
+    # NGinx
+    - name: Install nginx
+      apt: name=nginx state=installed
+    - name: Start nginx
+      service: name=nginx state=running
+    - name: Create nginx config
+      template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
