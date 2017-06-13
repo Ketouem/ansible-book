@@ -1,2 +1,3 @@
 ---
-# handlers file for Ketouem.nginx
+- name: restart nginx
+  service: name=nginx state=restarted

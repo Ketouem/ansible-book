@@ -9,15 +9,6 @@
   tasks:
     - name: Install required packages
       ping:
-    # NGinx
-    - name: Install nginx
-      apt: name=nginx state=installed
-    - name: Start nginx
-      service: name=nginx state=running
-    - name: Create nginx config
-      template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
-      notify: restart nginx
-
     # Wordpress
     - name: Copy wordpress.zip into /tmp and unarchive it
       unarchive: src=files/wordpress.zip dest=/tmp creates=/tmp/wordpress/wp-settings.php
@@ -42,7 +33,3 @@
     - name: Import Wordpress DB
       mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
       when: db_exist.rc > 0
-
-  handlers:
-    - name: restart nginx
-      service: name=nginx state=restarted
