@@ -6,13 +6,13 @@
 - name: Copy WordPress files
   command: cp -a /tmp/wordpress/. /var/www/book.example.com creates=/var/www/book.example.com/wp-settings.php
 - name: Create Wordpress MySQL database
-  mysql_db: name=wordpress state=present
+  mysql_db: name="{{database_name}}" state=present
 - name: Create WordPress MySQL user
-  mysql_user: name=wordpress host=localhost password=bananas priv=wordpress.*:ALL
+  mysql_user: name="{{database_user}}" host=localhost password={{database_password}} priv="{{database_name}}.*:ALL"
 - name: Create wp-config
   template: src=wp-config.php dest=/var/www/book.example.com/wp-config.php
 - name: Does the database exist ?
-  command: mysql -u root wordpress -e "SELECT ID FROM wordpress.wp_users LIMIT 1;"
+  command: mysql -u root "{{database_name}}" -e "SELECT ID FROM {{database_name}}.wp_users LIMIT 1;"
   register: db_exist
   ignore_errors: true
   changed_when: false
@@ -20,5 +20,5 @@
   copy: src=wp-database.sql dest=/tmp/wp-database.sql
   when: db_exist.rc > 0
 - name: Import Wordpress DB
-  mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
+  mysql_db: target=/tmp/wp-database.sql state=import name="{{database_name}}"
   when: db_exist.rc > 0

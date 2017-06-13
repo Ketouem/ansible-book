@@ -2,4 +2,7 @@
 - hosts: all
   become: true
   roles:
-    - Ketouem.wordpress
+    - role: Ketouem.wordpress
+      database_name: michaelwp
+      database_user: michaelwp
+      database_password: bananas18374
