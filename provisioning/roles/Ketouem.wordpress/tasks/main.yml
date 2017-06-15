@@ -17,7 +17,7 @@
   ignore_errors: true
   changed_when: false
 - name: Copy Wordpress DB
-  copy: src=wp-database.sql dest=/tmp/wp-database.sql
+  template: src=wp-database.sql dest=/tmp/wp-database.sql
   when: db_exist.rc > 0
 - name: Import Wordpress DB
   mysql_db: target=/tmp/wp-database.sql state=import name="{{database_name}}"
