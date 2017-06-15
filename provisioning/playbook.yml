@@ -6,3 +6,4 @@
       database_name: michaelwp
       database_user: michaelwp
       database_password: bananas18374
+      wp_domain: book.example.com
