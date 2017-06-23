@@ -1,3 +1,4 @@
 .vagrant
 *.retry
 ansible-module/ansible/
+example_file.txt

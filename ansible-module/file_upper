@@ -2,8 +2,16 @@
 
 source $1
 
-content=$(cat $file | tr '[:lower:]' '[:upper:]')
-echo $content > $file
+original=$(cat $file)
+content=$(echo $original | tr '[:lower:]' '[:upper:]')
+
+if [[ "$original" == "$content" ]]; then
+  CHANGED="false"
+else
+  CHANGED="true"
+  echo $content > $file
+fi
+
 cat <<EOF
-{"content":"$content"}
+{"changed":$CHANGED, "content":"$content"}
 EOF
