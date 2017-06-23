@@ -2,6 +2,8 @@
 
 source $1
 
+content=$(cat $file | tr '[:lower:]' '[:upper:]')
+echo $content > $file
 cat <<EOF
-{"content":"$foo"}
+{"content":"$content"}
 EOF
