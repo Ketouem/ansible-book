@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $1
+
 cat <<EOF
-{"content":"Hello World"}
+{"content":"$foo"}
 EOF
