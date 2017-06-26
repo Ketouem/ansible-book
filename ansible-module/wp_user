@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from ansible.module_utils.basic import *
+import xmlrpclib
 
 def main():
     module = AnsibleModule(
@@ -12,7 +13,10 @@ def main():
         }
     )
     params = module.params
-    module.exit_json(changed=True, name=params["name"])
+    server = xmlrpclib.ServerProxy("%s/xmlrpc.php" % params["url"],
+                                   use_datetime=True)
+    res = server.demo.sayHello()
+    module.exit_json(changed=True, name=res)
 
 if __name__ == "__main__":
     main()
