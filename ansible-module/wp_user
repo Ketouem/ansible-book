@@ -8,15 +8,51 @@ def main():
         argument_spec={
             "url": {"required": True},
             "username": {"aliases": ["name"], "required": True},
-            "password": {"required": True},
+            "password": {"required": False},
+            "first_name": {"required": False},
+            "last_name": {"required": False},
+            "user_url": {"required": False},
+            "display_name": {"required": False},
+            "nickname": {"required": False},
+            "nicename": {"required": False},
+            "bio": {"required": False},
             "display_name": {"required": False}
-        }
+        },
+        supports_check_mode=True
     )
     params = module.params
+
     server = xmlrpclib.ServerProxy("%s/xmlrpc.php" % params["url"],
                                    use_datetime=True)
-    res = server.demo.sayHello()
-    module.exit_json(changed=True, name=res)
+    existing_users = server.wp.getUsers(1, params["username"],
+                                        params["password"])
+    current_user = None
+    for u in existing_users:
+        if u["username"] == params["username"]:
+            current_user = u
+            break
+
+    details = {}
+    skip_fields = ["_ansible_check_mode", "username", "name", "password", "url"]
+    mappings = {"user_url": "url"}
+    for k, v in params.iteritems():
+        if k in skip_fields:
+            continue
+        if v:
+            if k in mappings:
+                k = mappings[k]
+            details[k] = v
+
+    is_changed = False
+    for k, v in details.iteritems():
+        if current_user[k] != details[k]:
+            current_user[k] = details[k]
+            is_changed = True
+
+        if is_changed and not module.check_mode:
+            res = server.wp.editProfile(1, params["username"],
+                                        params["password"], details)
+    module.exit_json(changed=is_changed, name=dict(current_user))
 
 if __name__ == "__main__":
     main()
