@@ -1,0 +1,17 @@
+---
+- name: Delete AWS resources
+  hosts: all
+  connection: local
+  gather_facts: False
+  tasks:
+    - ec2_remote_facts:
+        region: eu-west-1
+        filters:
+          "instance-state-name": running
+      register: instance_list
+    - set_fact:
+        instance_ids: "{{instance_list.instances|map(attribute='id')|list}}"
+    - ec2:
+        region: eu-west-1
+        instance_ids: "{{instance_ids}}"
+        state: absent
