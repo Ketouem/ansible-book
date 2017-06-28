@@ -1,0 +1,14 @@
+---
+- name: Install Wordpress
+  hosts: all
+  become: True
+  tasks:
+    - ping:
+  roles:
+    - role: Ketouem.wordpress
+      database_name: michaelwp
+      database_user: michaelwp
+      database_password: bananas18374
+      wp_domain: book.example.com
+      initial_post_title: Hey There
+      initial_post_content: This is running on AWS

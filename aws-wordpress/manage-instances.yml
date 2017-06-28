@@ -1,0 +1,17 @@
+---
+- name: Manage AWS resources
+  hosts: all
+  connection: local
+  gather_facts: False
+  tasks:
+    - ec2:
+        image: ami-9abea4fb
+        region: us-west-2
+        instance_type: t2.micro
+        instance_tags:
+          project: AnsibleWordpress
+        count_tag:
+          project: AnsibleWordpress
+        exact_count: 1
+        group: ssh-and-http
+        key_name: aws-ansible

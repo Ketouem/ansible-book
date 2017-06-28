@@ -1,0 +1,5 @@
+dependencies:
+  - Ketouem.common
+  - Ketouem.php
+  - Ketouem.mysql
+  - Ketouem.nginx
