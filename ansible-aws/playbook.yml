@@ -1,0 +1,12 @@
+---
+- name: Create AWS resources
+  hosts: all
+  connection: local
+  gather_facts: False
+  tasks:
+    - ec2:
+        image: ami-d7b9a2b1
+        region: eu-west-1
+        instance_type: t2.micro
+        instance_tags:
+          Name: Demo
