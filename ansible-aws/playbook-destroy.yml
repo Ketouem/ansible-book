@@ -7,7 +7,8 @@
     - ec2_remote_facts:
         region: eu-west-1
         filters:
-          "tag:Name=Demo"
+          "instance-state-name": running
+          "tag:project": AnsibleScaling
       register: instance_list
     - set_fact:
         instance_ids: "{{instance_list.instances|map(attribute='id')|list}}"

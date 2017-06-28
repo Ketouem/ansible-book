@@ -9,4 +9,7 @@
         region: eu-west-1
         instance_type: t2.micro
         instance_tags:
-          Name: Demo
+          project: AnsibleScaling
+        count_tag:
+          project: AnsibleScaling
+        exact_count: 2

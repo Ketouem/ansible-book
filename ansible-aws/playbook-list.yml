@@ -8,5 +8,6 @@
       region: eu-west-1
       filters:
         "instance-state-name": running
+        "tag:project": AnsibleScaling
     register: instance_list
   - debug: var=instance_list
